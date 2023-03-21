@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace contact_app.Models
@@ -6,6 +7,7 @@ namespace contact_app.Models
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //Data annotation para el auto increment
         public int Id { get; set; }
 
         [Required]

@@ -7,6 +7,7 @@ namespace contact_app.Models
     public class Contact
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //Data annotation para el auto increment
         public int Id { get; set; }
 
         [ForeignKey("UserId")]
