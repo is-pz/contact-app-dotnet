@@ -11,7 +11,7 @@ using contact_app.Data;
 namespace contact_app.Migrations
 {
     [DbContext(typeof(ContactAppContext))]
-    [Migration("20230321183429_InitialCreate")]
+    [Migration("20230321203609_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -58,9 +58,10 @@ namespace contact_app.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Email")
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
