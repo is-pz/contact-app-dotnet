@@ -1,12 +1,13 @@
 ﻿using contact_app.Models;
+using contact_app.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace contact_app.Controllers
 {
-    public class LoginController : Controller
+    public class UserController : Controller
     {
-       
+
         public ActionResult Index()
         {
             return View();
@@ -32,7 +33,9 @@ namespace contact_app.Controllers
                 User user = new User();
                 user.Name = collection["Name"];
                 user.Email = collection["Email"];
-                user.Password = collection["Password"];
+                user.Password = collection["Password"]; // TODO: Crear el hash de la contrasenia
+
+
 
                 return RedirectToAction(nameof(Index));
             }
