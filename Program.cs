@@ -1,4 +1,5 @@
 using contact_app.Data;
+using contact_app.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSqlServer<ContactAppContext>(builder.Configuration.GetConnectionString("ContactDb"));
+
+builder.Services.AddScoped<IUserService,  UserService>();
 
 var app = builder.Build();
 
