@@ -13,7 +13,7 @@ namespace contact_app.Models
         [Required]
         [NotNull]
         [MaxLength(100)]
-        public int Email { get; set; }
+        public String? Email { get; set; }
         
         [Required]
         [MaxLength(50)]
