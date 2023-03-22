@@ -9,11 +9,11 @@ using System.Security.Claims;
 
 namespace contact_app.Controllers
 {
-    public class UserController : Controller
+    public class AccessController : Controller
     {
         private readonly IUserService crud;
 
-        public UserController(IUserService userService)
+        public AccessController(IUserService userService)
         {
             this.crud = userService;
         }
@@ -41,6 +41,8 @@ namespace contact_app.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                HttpContext.Session.SetInt32("UserId", user.Id);
 
                 return RedirectToAction("Index", "Dashboard");
             }
