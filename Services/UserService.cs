@@ -42,7 +42,7 @@ namespace contact_app.Services
 
         public User ValidateUser(String email, String Password)
         {
-            User? user = _context.Users.Find(email);
+            User? user = _context.Users.Where(c => c.Email == email).FirstOrDefault();
             if (user == null)
             {
                 if (user.Password.Equals(Password))
