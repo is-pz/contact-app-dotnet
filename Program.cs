@@ -2,6 +2,8 @@ using contact_app.Controllers;
 using contact_app.Data;
 using contact_app.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,13 @@ builder.Services.AddSqlServer<ContactAppContext>(builder.Configuration.GetConnec
 
 builder.Services.AddScoped<IUserService,  UserService>();
 
+//Configuracion de una cookie
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(c =>
+{
+    c.LoginPath = "/Login/Index";
+    c.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    c.AccessDeniedPath = "/Dashboard/index";
+});
 
 var app = builder.Build();
 
@@ -28,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
