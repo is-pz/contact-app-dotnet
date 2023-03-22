@@ -13,6 +13,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSqlServer<ContactAppContext>(builder.Configuration.GetConnectionString("ContactDb"));
 
 builder.Services.AddScoped<IUserService,  UserService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 //Configuracion de una cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(c =>
