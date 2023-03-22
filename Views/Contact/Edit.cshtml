@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "_Layout";
+    Contact contact = ViewBag.Contact;
+}
+
+<div class="col-lg-8 mx-auto text-center">
+    <form class="col-lg-8 mx-auto" method="POST" asp-controller="Contact" asp-action="Edit">
+        <h2 class="mb-4">Edit contact</h2>
+        <input type="hidden" value="@contact.Id" name="id" />
+        <div class="mb-3 row">
+            <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
+
+            <div class="col-md-6">
+                <input value="@contact.Name" id="name" type="text" class="form-control" name="name" autocomplete="name" autofocus>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="phone_number" class="col-md-4 col-form-label text-md-end">Phone Number</label>
+
+            <div class="col-md-6">
+                <input value="@contact.PhoneNumber" id="PhoneNumber" type="tel" class="form-control" name="PhoneNumber" autocomplete="PhoneNumber" autofocus>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-md-6">
+                <a class="btn btn-primary" type="button" asp-controller="Dashboard" asp-action="Index">Return</a>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-warning">Edit</button>
+            </div>
+        </div>
+    </form>
+</div>

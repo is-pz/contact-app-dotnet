@@ -1,59 +1,81 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using contact_app.Services;
+using contact_app.Models;
 
 namespace contact_app.Controllers
 {
     [Authorize]
     public class ContactController : Controller
     {
-        // GET: ContactController
-        public ActionResult Index()
+
+        private readonly IContactService crud;
+
+        public ContactController(IContactService _contactService) 
         {
-            return View();
+            this.crud = _contactService;
         }
 
-        // GET: ContactController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: ContactController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ContactController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+                Contact contact = new Contact
+                {
+                    UserId = (int)HttpContext.Session.GetInt32("UserId"),
+                    Name = collection["Name"],
+                    PhoneNumber = int.Parse(collection["PhoneNumber"].ToString())
+                };
+
+                bool UserCreated = crud.Create(contact);
+
+                ViewBag.Message = (!UserCreated) ? "Ocurrio un error al agregar el contacto" : "Se agrego el contacto";
+       
+                return RedirectToAction("Index", "Dashboard");
+
+            }catch
             {
                 return View();
             }
         }
 
-        // GET: ContactController/Edit/5
         public ActionResult Edit(int id)
         {
+            int userId = (int)HttpContext.Session.GetInt32("UserId");
+            Contact contact = crud.Get(id, userId);
+
+            ViewBag.Contact = contact;
+
             return View();
         }
 
-        // POST: ContactController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(IFormCollection collection)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                int userId = (int)HttpContext.Session.GetInt32("UserId");
+                Contact contact = new Contact
+                {
+                    Id = int.Parse(collection["id"].ToString()),
+                    UserId = userId,
+                    Name = collection["Name"],
+                    PhoneNumber = int.Parse(collection["PhoneNumber"].ToString())
+                };
+
+                crud.Update(contact);
+
+                return RedirectToAction("Edit", "Contact", int.Parse(collection["id"].ToString()));
             }
             catch
             {
@@ -61,20 +83,14 @@ namespace contact_app.Controllers
             }
         }
 
-        // GET: ContactController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ContactController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                crud.Delete(id);
+                return RedirectToAction("Index", "Dashboard");
             }
             catch
             {

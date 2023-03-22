@@ -3,6 +3,7 @@ using contact_app.Data;
 using contact_app.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Session;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,13 +16,22 @@ builder.Services.AddSqlServer<ContactAppContext>(builder.Configuration.GetConnec
 builder.Services.AddScoped<IUserService,  UserService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 
-//Configuracion de una cookie
+
+//Configuracion de la cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(c =>
 {
     c.LoginPath = "/Login/Index";
     c.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     c.AccessDeniedPath = "/Dashboard/index";
 });
+
+//Configuracion de la session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+});
+
 
 var app = builder.Build();
 
@@ -40,6 +50,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
+app.UseSession();
 
 app.UseAuthorization();
 

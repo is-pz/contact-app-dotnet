@@ -27,8 +27,12 @@
                         <div class="card-body">
                             <h3 class="card-title text-capitalize">@contact.Name</h3>
                             <p class="m-2">@contact.PhoneNumber</p>
-                            <a asp-controller="Contact" asp-action="Details" class="btn btn-secondary mb-2">Edit Contact</a>
-                            <a asp-controller="Contact" asp-action="Delete" class="btn btn-danger mb-2">Delete Contact</a>
+                            <div class="row mx-auto">
+                                <a asp-controller="Contact" asp-action="Edit" asp-route-id="@contact.Id" class="btn btn-secondary mb-2 col-lg-6">Edit</a>
+                                <form asp-controller="Contact" asp-action="Delete" asp-route-id="@contact.Id" class="col-lg-6">
+                                    <button class="btn btn-danger mb-2 col-lg-12">Delete</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>    
