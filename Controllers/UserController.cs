@@ -2,20 +2,56 @@
 using contact_app.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+
 
 namespace contact_app.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserService crud;
+
+        public UserController(IUserService userService)
+        {
+            this.crud = userService;
+        }
 
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Login()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(String email, String password)
         {
-            return View("Dashboard");
+
+            var user = crud.ValidateUser(email, password);
+
+            if(user != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Email, user.Email)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                return RedirectToAction("Index", "Dashboard");
+            }
+            ViewBag.Message = "El correo electronico o contraseña son incorrectos";
+            return View("Index");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -28,21 +64,23 @@ namespace contact_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(IFormCollection collection)
         {
-            try
+            
+            User user = new User
             {
-                User user = new User();
-                user.Name = collection["Name"];
-                user.Email = collection["Email"];
-                user.Password = collection["Password"]; // TODO: Crear el hash de la contrasenia
+                Name = collection["Name"],
+                Email = collection["Email"],
+                Password = collection["Password"] // TODO: Crear el hash de la contrasenia
+            };
 
+            bool result = crud.Add(user);
 
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            if (!result)
             {
-                return View();
+                ViewBag.Message = "Ocurrio un error al intentar registrar la cuenta";
+                return View("Register");
             }
+
+            return View("Index");
         }
       
     }

@@ -12,10 +12,18 @@ namespace contact_app.Services
             this._context = context;
         }
 
-        public void Add(User user)
+        public Boolean Add(User user)
         {
-            _context.Add(user);
-            _context.SaveChanges();
+            try
+            {
+                _context.Add(user);
+                _context.SaveChanges();
+
+                return true;
+            }catch(Exception ex) {
+                Console.WriteLine($"Excepcion: {ex}");
+                return false;
+            }
         }
 
         public User Get(int id)
@@ -28,6 +36,20 @@ namespace contact_app.Services
             _context.Users.Update(user);
             _context.SaveChanges();
 
+            return user;
+        }
+
+
+        public User ValidateUser(String email, String Password)
+        {
+            User? user = _context.Users.Find(email);
+            if (user == null)
+            {
+                if (user.Password.Equals(Password))
+                {
+                    return null;
+                }
+            }
             return user;
         }
     }
