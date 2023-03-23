@@ -10,11 +10,11 @@ namespace contact_app.Controllers
     public class ContactController : Controller
     {
 
-        private readonly IContactService crud;
+        private readonly IContactService _crud;
 
         public ContactController(IContactService _contactService) 
         {
-            this.crud = _contactService;
+            this._crud = _contactService;
         }
 
 
@@ -36,25 +36,31 @@ namespace contact_app.Controllers
                     PhoneNumber = int.Parse(collection["PhoneNumber"].ToString())
                 };
 
-                bool UserCreated = crud.Create(contact);
-
-                ViewBag.Message = (!UserCreated) ? "Ocurrio un error al agregar el contacto" : "Se agrego el contacto";
-       
-                return RedirectToAction("Index", "Dashboard");
-
+                bool contactCreated = _crud.Create(contact);
+                
+                ViewBag.Message = new MessageModel
+                {
+                    Message = (contactCreated) ? "Added successfully" : "Failed to add",
+                    Type = (contactCreated) ? "success" : "danger" 
+                };
+                
             }catch
             {
-                return View();
+                ViewBag.Message = new MessageModel
+                {
+                    Message = "Failed to perform action",
+                    Type =  "danger"
+                };
             }
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public ActionResult Edit(int id)
         {
             int userId = (int)HttpContext.Session.GetInt32("UserId");
-            Contact contact = crud.Get(id, userId);
+            Contact contact = _crud.Get(id, userId);
 
             ViewBag.Contact = contact;
-
             return View();
         }
 
@@ -73,14 +79,27 @@ namespace contact_app.Controllers
                     PhoneNumber = int.Parse(collection["PhoneNumber"].ToString())
                 };
 
-                crud.Update(contact);
+                bool updateContact = _crud.Update(contact);
 
-                return RedirectToAction("Edit", "Contact", int.Parse(collection["id"].ToString()));
+                ViewBag.Message = new MessageModel
+                {
+                    Message = (updateContact) ? "Updated successfully" : "Failed to update",
+                    Type = (updateContact) ? "success" : "danger"
+                };
+
+                Contact newDataContact = _crud.Get(contact.Id, userId);
+                ViewBag.Contact = newDataContact;
             }
             catch
             {
-                return View();
+                ViewBag.Message = new MessageModel
+                {
+                    Message = "Failed to perform action",
+                    Type = "danger"
+                };
             }
+
+            return View("Edit");
         }
 
         [HttpPost]
@@ -89,13 +108,22 @@ namespace contact_app.Controllers
         {
             try
             {
-                crud.Delete(id);
-                return RedirectToAction("Index", "Dashboard");
+                bool deletedContact = _crud.Delete(id);
+                ViewBag.Message = new MessageModel
+                {
+                    Message = (deletedContact) ? "Deleted successfully" : "Failed to delete",
+                    Type = (deletedContact) ? "success" : "danger"
+                };
             }
             catch
             {
-                return View();
+                ViewBag.Message = new MessageModel
+                {
+                    Message = "Failed to perform action",
+                    Type = "danger"
+                };
             }
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }

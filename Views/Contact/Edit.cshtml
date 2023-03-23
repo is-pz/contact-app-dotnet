@@ -1,11 +1,24 @@
 ﻿@{
     Layout = "_Layout";
+    ViewBag.Title = "Edit contact";
+
     Contact contact = ViewBag.Contact;
+    
+    MessageModel Message = ViewBag.Message;
+
 }
 
 <div class="col-lg-8 mx-auto text-center">
+
+
     <form class="col-lg-8 mx-auto" method="POST" asp-controller="Contact" asp-action="Edit">
         <h2 class="mb-4">Edit contact</h2>
+        @if (Message != null)
+        {
+            <div class="alert alert-@Message.Type col-lg-6 mx-auto" role="alert">
+                @Message.Message
+            </div>
+        }
         <input type="hidden" value="@contact.Id" name="id" />
         <div class="mb-3 row">
             <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>

@@ -46,13 +46,17 @@ namespace contact_app.Controllers
 
                 return RedirectToAction("Index", "Dashboard");
             }
-            ViewBag.Message = "El correo electronico o contraseña son incorrectos";
+            ViewBag.Message = new MessageModel {
+                Message = "Invalid email or password",
+                Type = "warning",
+            };
             return View("Index");
         }
 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
@@ -78,7 +82,11 @@ namespace contact_app.Controllers
 
             if (!result)
             {
-                ViewBag.Message = "Ocurrio un error al intentar registrar la cuenta";
+                ViewBag.Message = new MessageModel
+                {
+                    Message = "An error occurred while trying to register the account",
+                    Type = "danger"
+                };
                 return View("Register");
             }
 

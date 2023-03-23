@@ -1,26 +1,33 @@
 ﻿@{
     Layout = "_Layout";
     ViewBag.Title = "Registro";
+    MessageModel Message = ViewBag.Message;
 }
 
 <div class="col-lg-8 mx-auto text-center">
-    <h2>Regsitrarse</h2>
+    <h2>Sign In</h2>
+    @if (Message != null)
+    {
+        <div class="alert alert-@Message.Type col-lg-6 mx-auto" role="alert">
+            @Message.Message
+        </div>
+    }
     <form class="col-lg-8 mx-auto"  asp-controller="User" asp-action="Register" method="POST">
         <div class="mt-3">
-            <label for="Name" >Nombre de usuario</label>
-            <input class="form-control" name="Name" placeholder="Ingrese un nombre de usuario"  required/>
+            <label for="Name" >Username</label>
+            <input class="form-control" name="Name" placeholder="Enter a username" required />
         </div>
             <div class="mt-3">
-            <label for="Email" >Correo electronico</label>
-            <input class="form-control" name="Email" type="email" placeholder="Ingrese un correo electronico" required/>
+            <label for="Email" >Email</label>
+            <input class="form-control" name="Email" type="email" placeholder="Enter an email" required />
         </div>
         <div class="mt-3">
-            <label for="Password">Contraseña</label>
-            <input class="form-control" name="Password" type="password" placeholder="Ingrese una contraseña" required/>
+            <label for="Password">Password</label>
+            <input class="form-control" name="Password" type="password" placeholder="Enter a password" required />
         </div>
 
         <div class="mt-3">
-            <button class="form-control" type="submit">Registrarse</button>
+            <button class="form-control btn bg-info text-white" type="submit">Sign in</button>
         </div>
 
     </form>

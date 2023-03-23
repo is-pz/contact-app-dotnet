@@ -37,23 +37,38 @@ namespace contact_app.Services
             }
         }
 
-        public Contact Update(Contact _contact)
+        public Boolean Update(Contact _contact)
         {
-            Contact contact = context.Contacts.Find(_contact.Id);
-            contact.Name = _contact.Name;
-            contact.PhoneNumber = _contact.PhoneNumber;
+            try
+            {
+                Contact contact = context.Contacts.Find(_contact.Id);
+                contact.Name = _contact.Name;
+                contact.PhoneNumber = _contact.PhoneNumber;
 
-            context.Update(contact);
-            context.SaveChanges();
+                context.Update(contact);
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
 
-            return contact;
         }
 
-        public void Delete(int idContact)
+        public Boolean Delete(int idContact)
         {
-            Contact _contact = context.Contacts.Find(idContact);
-            context.Remove(_contact);
-            context.SaveChanges();
+            try
+            {
+                Contact _contact = context.Contacts.Find(idContact);
+                context.Remove(_contact);
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

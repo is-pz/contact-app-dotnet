@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using contact_app.Services;
 using contact_app.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace contact_app.Controllers
 {
@@ -19,8 +18,8 @@ namespace contact_app.Controllers
 
         public ActionResult Index()
         {
-            User.ToString();
-            List<Contact> contacts = crud.GetAll(1);
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
+            List<Contact> contacts = crud.GetAll(UserId);
             ViewBag.Contacts = contacts;
             return View();
         }

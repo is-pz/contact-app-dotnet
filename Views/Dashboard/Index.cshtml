@@ -3,6 +3,7 @@
     ViewBag.Title = "Dashboard";
 
     List<Contact> Contacts = ViewBag.Contacts;
+    
 }
 
 
@@ -28,9 +29,9 @@
                             <h3 class="card-title text-capitalize">@contact.Name</h3>
                             <p class="m-2">@contact.PhoneNumber</p>
                             <div class="row mx-auto">
-                                <a asp-controller="Contact" asp-action="Edit" asp-route-id="@contact.Id" class="btn btn-secondary mb-2 col-lg-6">Edit</a>
-                                <form asp-controller="Contact" asp-action="Delete" asp-route-id="@contact.Id" class="col-lg-6">
-                                    <button class="btn btn-danger mb-2 col-lg-12">Delete</button>
+                                <a asp-controller="Contact" asp-action="Edit" asp-route-id="@contact.Id" class="btn btn-secondary bg-warning mb-2 col-lg-6">Edit</a>
+                                <form id="formDeleteContact" asp-controller="Contact" asp-action="Delete" asp-route-id="@contact.Id" class="col-lg-6">
+                                    <button type="Submit" class="btn btn-danger mb-2 col-lg-12">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -41,3 +42,7 @@
         }
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/Dashboard.js"></script>
+}
