@@ -14,13 +14,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSqlServer<ContactAppContext>(builder.Configuration.GetConnectionString("ContactDb"));
 
 builder.Services.AddScoped<IUserService,  UserService>();
+builder.Services.AddScoped<IAccessService, AccessService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 
 
 //Configuracion de la cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(c =>
 {
-    c.LoginPath = "/Login/Index";
+    c.LoginPath = "/Access";
     c.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     c.AccessDeniedPath = "/Dashboard/index";
 });

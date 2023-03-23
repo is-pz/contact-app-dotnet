@@ -3,11 +3,11 @@ using contact_app.Models;
 
 namespace contact_app.Services
 {
-    public class UserService : IUserService
+    public class AccessService : IAccessService
     {
         private readonly ContactAppContext _context;
 
-        public UserService(ContactAppContext context)
+        public AccessService(ContactAppContext context)
         {
             this._context = context;
         }
@@ -38,6 +38,19 @@ namespace contact_app.Services
 
             return user;
         }
-       
+
+
+        public UserModel ValidateUser(String email, String Password)
+        {
+            UserModel? user = _context.Users.Where(c => c.Email == email).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.Password.Equals(Password))
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
     }
 }

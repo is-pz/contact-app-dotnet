@@ -11,11 +11,11 @@ namespace contact_app.Controllers
 {
     public class AccessController : Controller
     {
-        private readonly IUserService crud;
+        private readonly IAccessService _crud;
 
-        public AccessController(IUserService userService)
+        public AccessController(IAccessService accessService)
         {
-            this.crud = userService;
+            this._crud = accessService;
         }
 
         public ActionResult Index()
@@ -28,7 +28,7 @@ namespace contact_app.Controllers
         public async Task<IActionResult> Login(String email, String password)
         {
 
-            var user = crud.ValidateUser(email, password);
+            var user = _crud.ValidateUser(email, password);
 
             if(user != null)
             {
@@ -78,7 +78,7 @@ namespace contact_app.Controllers
                 Password = collection["Password"] // TODO: Crear el hash de la contrasenia
             };
 
-            bool result = crud.Add(user);
+            bool result = _crud.Add(user);
 
             if (!result)
             {
