@@ -4,10 +4,10 @@ namespace contact_app.Services
 {
     public interface IContactService
     {
-        Contact Get(int idContact, int idUser);
-        List<Contact> GetAll(int idUser);
-        Boolean Create(Contact _contact);
-        Boolean Update(Contact _contact);
+        ContactModel Get(int idContact, int idUser);
+        List<ContactModel> GetAll(int idUser);
+        Boolean Create(ContactModel _contact);
+        Boolean Update(ContactModel _contact);
         Boolean Delete(int idContact);
 
     }

@@ -12,7 +12,7 @@ namespace contact_app.Services
             this._context = context;
         }
 
-        public Boolean Add(User user)
+        public Boolean Add(UserModel user)
         {
             try
             {
@@ -26,12 +26,12 @@ namespace contact_app.Services
             }
         }
 
-        public User Get(int id)
+        public UserModel Get(int id)
         {
             return _context.Users.Find(id);
         }
 
-        public User Update(User user)
+        public UserModel Update(UserModel user)
         {
             _context.Users.Update(user);
             _context.SaveChanges();
@@ -40,9 +40,9 @@ namespace contact_app.Services
         }
 
 
-        public User ValidateUser(String email, String Password)
+        public UserModel ValidateUser(String email, String Password)
         {
-            User? user = _context.Users.Where(c => c.Email == email).FirstOrDefault();
+            UserModel? user = _context.Users.Where(c => c.Email == email).FirstOrDefault();
             if (user != null)
             {
                 if (user.Password.Equals(Password))

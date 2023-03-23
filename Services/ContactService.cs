@@ -12,17 +12,17 @@ namespace contact_app.Services
             this.context = _context;
         }
 
-        public Contact Get(int idContact, int idUser)
+        public ContactModel Get(int idContact, int idUser)
         {
             return context.Contacts.Where(c => c.UserId == idUser && c.Id == idContact).FirstOrDefault();
         }
 
-        public List<Contact> GetAll(int idUser) 
+        public List<ContactModel> GetAll(int idUser) 
         {
             return context.Contacts.Where(c => c.UserId == idUser).ToList();
         }
 
-        public Boolean Create(Contact _contact)
+        public Boolean Create(ContactModel _contact)
         {
             try
             {
@@ -37,11 +37,11 @@ namespace contact_app.Services
             }
         }
 
-        public Boolean Update(Contact _contact)
+        public Boolean Update(ContactModel _contact)
         {
             try
             {
-                Contact contact = context.Contacts.Find(_contact.Id);
+                ContactModel contact = context.Contacts.Find(_contact.Id);
                 contact.Name = _contact.Name;
                 contact.PhoneNumber = _contact.PhoneNumber;
 
@@ -60,7 +60,7 @@ namespace contact_app.Services
         {
             try
             {
-                Contact _contact = context.Contacts.Find(idContact);
+                ContactModel _contact = context.Contacts.Find(idContact);
                 context.Remove(_contact);
                 context.SaveChanges();
                 return true;

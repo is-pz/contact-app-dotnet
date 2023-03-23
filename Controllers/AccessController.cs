@@ -71,7 +71,7 @@ namespace contact_app.Controllers
         public ActionResult Register(IFormCollection collection)
         {
             
-            User user = new User
+            UserModel user = new UserModel
             {
                 Name = collection["Name"],
                 Email = collection["Email"],

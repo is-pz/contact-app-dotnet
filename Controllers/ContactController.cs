@@ -29,7 +29,7 @@ namespace contact_app.Controllers
         {
             try
             {
-                Contact contact = new Contact
+                ContactModel contact = new ContactModel
                 {
                     UserId = (int)HttpContext.Session.GetInt32("UserId"),
                     Name = collection["Name"],
@@ -58,7 +58,7 @@ namespace contact_app.Controllers
         public ActionResult Edit(int id)
         {
             int userId = (int)HttpContext.Session.GetInt32("UserId");
-            Contact contact = _crud.Get(id, userId);
+            ContactModel contact = _crud.Get(id, userId);
 
             ViewBag.Contact = contact;
             return View();
@@ -71,7 +71,7 @@ namespace contact_app.Controllers
             try
             {
                 int userId = (int)HttpContext.Session.GetInt32("UserId");
-                Contact contact = new Contact
+                ContactModel contact = new ContactModel
                 {
                     Id = int.Parse(collection["id"].ToString()),
                     UserId = userId,
@@ -87,7 +87,7 @@ namespace contact_app.Controllers
                     Type = (updateContact) ? "success" : "danger"
                 };
 
-                Contact newDataContact = _crud.Get(contact.Id, userId);
+                ContactModel newDataContact = _crud.Get(contact.Id, userId);
                 ViewBag.Contact = newDataContact;
             }
             catch
