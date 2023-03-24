@@ -1,14 +1,19 @@
 # contact-app
 
-Aplicación para guardar contactos 
+Basic application to save phone contacts 
 
-Construido con C# y .NET 7
+Built with C#, .NET 7, Bootstrap 5.3 and SweetAlert2
 
-# Comandos
+# Commands
 
-## Instalar librerias
+## Install dependencies
 ```
 dotnet restore
+```
+
+## Run migrations
+```
+dotnet ef database update
 ```
 
 ## Build
@@ -16,8 +21,7 @@ dotnet restore
 dotnet build
 ```
 
-## Ejecutar proyecto
-
+## Run project
 ```
 dotnet run
 ```
