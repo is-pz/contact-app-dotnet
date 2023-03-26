@@ -5,17 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-
+using contact_app.Utilities;
 
 namespace contact_app.Controllers
 {
     public class AccessController : Controller
     {
         private readonly IAccessService _crud;
+        private PasswordUtilities passwordUtilities;
 
         public AccessController(IAccessService accessService)
         {
             this._crud = accessService;
+            this.passwordUtilities = new PasswordUtilities();
         }
 
         public ActionResult Index()
@@ -70,12 +72,14 @@ namespace contact_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(IFormCollection collection)
         {
-            
+
+            string hashedPassword = passwordUtilities.GetHashPassword(collection["Password"].ToString());
+
             UserModel user = new UserModel
             {
                 Name = collection["Name"],
                 Email = collection["Email"],
-                Password = collection["Password"] // TODO: Crear el hash de la contrasenia
+                Password = hashedPassword
             };
 
             bool result = _crud.Add(user);
@@ -89,7 +93,11 @@ namespace contact_app.Controllers
                 };
                 return View("Register");
             }
-
+            ViewBag.Message = new MessageModel
+            {
+                Message = "Registered successfully",
+                Type = "success"
+            };
             return View("Index");
         }
       

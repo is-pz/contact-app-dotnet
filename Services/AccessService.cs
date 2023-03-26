@@ -1,6 +1,6 @@
 ﻿using contact_app.Data;
 using contact_app.Models;
-
+using contact_app.Utilities;
 namespace contact_app.Services
 {
     public class AccessService : IAccessService
@@ -45,7 +45,8 @@ namespace contact_app.Services
             UserModel? user = _context.Users.Where(c => c.Email == email).FirstOrDefault();
             if (user != null)
             {
-                if (user.Password.Equals(Password))
+                PasswordUtilities passwordU = new PasswordUtilities();
+                if (passwordU.PasswordVerify(Password, user.Password))
                 {
                     return user;
                 }
