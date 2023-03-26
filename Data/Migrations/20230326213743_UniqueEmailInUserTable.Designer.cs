@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contact_app.Data;
 
@@ -10,9 +11,11 @@ using contact_app.Data;
 namespace contact_app.Migrations
 {
     [DbContext(typeof(ContactAppContext))]
-    partial class ContactAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230326213743_UniqueEmailInUserTable")]
+    partial class UniqueEmailInUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
