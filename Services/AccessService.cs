@@ -12,17 +12,19 @@ namespace contact_app.Services
             this._context = context;
         }
 
-        public Boolean Add(UserModel user)
+        public String Add(UserModel user)
         {
             try
             {
                 _context.Add(user);
                 _context.SaveChanges();
 
-                return true;
+                return "Registered successfully";
             }catch(Exception ex) {
                 Console.WriteLine($"Excepcion: {ex}");
-                return false;
+                return (ex.InnerException.ToString().Contains("The duplicate key value is")) ? 
+                            "Email is already registered" : 
+                            "An error occurred while trying to register the account";
             }
         }
 

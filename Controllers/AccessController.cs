@@ -78,20 +78,20 @@ namespace contact_app.Controllers
                 Password = hashedPassword
             };
 
-            bool result = _crud.Add(user);
+            string result = _crud.Add(user);
 
-            if (!result)
+            if (!result.Contains("successfully"))
             {
                 ViewBag.Message = new MessageModel
                 {
-                    Message = "An error occurred while trying to register the account",
+                    Message = $"{result}",
                     Type = "danger"
                 };
                 return View("Register");
             }
             ViewBag.Message = new MessageModel
             {
-                Message = "Registered successfully",
+                Message = $"{result}",
                 Type = "success"
             };
             return View("Index");
