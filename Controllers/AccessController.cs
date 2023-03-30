@@ -36,15 +36,14 @@ namespace contact_app.Controllers
             {
                 var claims = new List<Claim>
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                HttpContext.Session.SetInt32("UserId", user.Id);
 
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -58,10 +57,8 @@ namespace contact_app.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
-
 
         public ActionResult Register()
         {
@@ -72,7 +69,6 @@ namespace contact_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(IFormCollection collection)
         {
-
             string hashedPassword = passwordUtilities.GetHashPassword(collection["Password"].ToString());
 
             UserModel user = new UserModel

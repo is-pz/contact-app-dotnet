@@ -17,7 +17,6 @@ namespace contact_app.Controllers
             this._crud = _contactService;
         }
 
-
         public ActionResult Create()
         {
             return View();
@@ -31,7 +30,7 @@ namespace contact_app.Controllers
             {
                 ContactModel contact = new ContactModel
                 {
-                    UserId = (int)HttpContext.Session.GetInt32("UserId"),
+                    UserId = int.Parse(User.FindFirst("NameIdentifier").Value),
                     Name = collection["Name"],
                     PhoneNumber = int.Parse(collection["PhoneNumber"].ToString())
                 };
@@ -57,7 +56,7 @@ namespace contact_app.Controllers
 
         public ActionResult Edit(int id)
         {
-            int userId = (int)HttpContext.Session.GetInt32("UserId");
+            int userId = int.Parse(User.FindFirst("NameIdentifier").Value);
             ContactModel contact = _crud.Get(id, userId);
 
             ViewBag.Contact = contact;
@@ -70,7 +69,7 @@ namespace contact_app.Controllers
         {
             try
             {
-                int userId = (int)HttpContext.Session.GetInt32("UserId");
+                int userId = int.Parse(User.FindFirst("NameIdentifier").Value);
                 ContactModel contact = new ContactModel
                 {
                     Id = int.Parse(collection["id"].ToString()),
@@ -81,14 +80,14 @@ namespace contact_app.Controllers
 
                 bool updateContact = _crud.Update(contact);
 
+                ContactModel newDataContact = _crud.Get(contact.Id, userId);
+                ViewBag.Contact = newDataContact;
+
                 ViewBag.Message = new MessageModel
                 {
                     Message = (updateContact) ? "Updated successfully" : "Failed to update",
                     Type = (updateContact) ? "success" : "danger"
                 };
-
-                ContactModel newDataContact = _crud.Get(contact.Id, userId);
-                ViewBag.Contact = newDataContact;
             }
             catch
             {
