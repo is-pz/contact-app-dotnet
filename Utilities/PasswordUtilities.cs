@@ -6,25 +6,29 @@ namespace contact_app.Utilities
 {
     public class PasswordUtilities
     {
+
+        private String EncodingString(string String)
+        {
+            byte[] StringToByte = Encoding.ASCII.GetBytes(String);
+            var Md5 = MD5.Create();
+            byte[] Md5String = Md5.ComputeHash(StringToByte);
+            var Ascii = new ASCIIEncoding();
+            var Md5Hash = Ascii.GetString(Md5String);
+
+            return Md5Hash;
+        }
+
         public String GetHashPassword(string Password)
         {
-            byte[] passwordToByte = Encoding.ASCII.GetBytes(Password);
-            var md5 = MD5.Create();
-            byte[] md5Password = md5.ComputeHash(passwordToByte);
-            var ascii = new ASCIIEncoding();
-            var hashedPassword = ascii.GetString(md5Password);
+            string HashedPassword = EncodingString(Password);
 
-            return hashedPassword;
+            return HashedPassword;
         }
 
         public Boolean PasswordVerify(string Password, string PasswordSaved)
         {
 
-            byte[] passwordToByte = Encoding.ASCII.GetBytes(Password);
-            var md5 = MD5.Create();
-            byte[] md5Password = md5.ComputeHash(passwordToByte);
-            var ascii = new ASCIIEncoding();
-            string hashedPassword = ascii.GetString(md5Password);
+            string hashedPassword = EncodingString(Password);
 
             return hashedPassword.Equals(PasswordSaved) ? true : false;
         }
