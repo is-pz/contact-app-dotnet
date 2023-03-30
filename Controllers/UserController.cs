@@ -19,7 +19,7 @@ namespace contact_app.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
-            ViewBag.UserId = int.Parse(User.FindFirst("NameIdentifier").Value);
+            ViewBag.UserId = int.Parse(User.Claims.First().Value);
             return View();
         }
         [HttpPost]
@@ -28,7 +28,7 @@ namespace contact_app.Controllers
         {
             try
             {
-                UserModel userData = _crud.Get(int.Parse(User.FindFirst("NameIdentifier").Value));
+                UserModel userData = _crud.Get(int.Parse(User.Claims.First().Value));
 
                 userData.Password = collection["NewPassword"];
 

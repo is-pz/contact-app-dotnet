@@ -18,7 +18,7 @@ namespace contact_app.Controllers
 
         public ActionResult Index()
         {
-            int UserId = int.Parse(User.FindFirst("NameIdentifier").Value);
+            int UserId = int.Parse(User.Claims.First().Value);
             List<ContactModel> contacts = crud.GetAll(UserId);
             ViewBag.Contacts = contacts;
             return View();

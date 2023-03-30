@@ -30,7 +30,7 @@ namespace contact_app.Controllers
             {
                 ContactModel contact = new ContactModel
                 {
-                    UserId = int.Parse(User.FindFirst("NameIdentifier").Value),
+                    UserId = int.Parse(User.Claims.First().Value),
                     Name = collection["Name"],
                     PhoneNumber = int.Parse(collection["PhoneNumber"].ToString())
                 };
@@ -56,7 +56,7 @@ namespace contact_app.Controllers
 
         public ActionResult Edit(int id)
         {
-            int userId = int.Parse(User.FindFirst("NameIdentifier").Value);
+            int userId = int.Parse(User.Claims.First().Value);
             ContactModel contact = _crud.Get(id, userId);
 
             ViewBag.Contact = contact;
@@ -69,7 +69,7 @@ namespace contact_app.Controllers
         {
             try
             {
-                int userId = int.Parse(User.FindFirst("NameIdentifier").Value);
+                int userId = int.Parse(User.Claims.First().Value);
                 ContactModel contact = new ContactModel
                 {
                     Id = int.Parse(collection["id"].ToString()),
